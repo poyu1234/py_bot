@@ -15,6 +15,24 @@ async def on_ready():
     print(f">> {client.user} is online <<")
 
 
+@client.command()
+async def load(ctx, extension):
+    await client.load_extension(f"cogs.{extension}")
+    await ctx.send(f"Loaded {extension} done.")
+
+
+@client.command()
+async def unload(ctx, extension):
+    await client.unload_extension(f'cogs.{extension}')
+    await ctx.send(f'unloaded {extension} done.')
+
+
+@client.command()
+async def reload(ctx, extension):
+    await client.reload_extension(f'cogs.{extension}')
+    await ctx.send(f'reloaded {extension} done.')
+
+
 async def load():
     for filename in os.listdir("./cogs"):
         if filename.endswith(".py"):
