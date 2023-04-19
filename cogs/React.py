@@ -1,6 +1,10 @@
 import discord
 from discord.ext import commands
 from core.classes import Cog_Extension
+import json
+
+with open('setting.json', 'r', encoding='utf8') as jfile:
+    jdata = json.load(jfile)
 
 
 class React(Cog_Extension):
@@ -24,6 +28,10 @@ class React(Cog_Extension):
                 await message.channel.send("你要我說什麼啦？")
             else:
                 await message.channel.send(tmp[1])
+
+        if message.content.startswith('云琦😢'):
+            pic = discord.File(jdata['wake_up'])
+            await message.channel.send(f'<@{message.author.id}>', file=pic)
 
     @commands.command()
     async def greet(self, ctx):
