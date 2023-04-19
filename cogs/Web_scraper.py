@@ -4,8 +4,6 @@ from core.classes import Cog_Extension
 import json
 import requests
 from bs4 import BeautifulSoup
-import wget
-import os
 from fpdf import FPDF
 import io
 
@@ -80,7 +78,6 @@ class Web_scraper(Cog_Extension):
             sheets = soup.find('div', id='EOPReadScrollerW').find_all(
                 'div', class_='EOPSingleWuxianpu')
             # set up
-            name = './tem_file/'+title
             counts2 = 0
             pdf = FPDF('P', 'mm', 'A4')
             for sheet in sheets:
@@ -90,13 +87,8 @@ class Web_scraper(Cog_Extension):
                     soup = BeautifulSoup(r.text, 'html.parser')
                     result = soup.find('div', 'EOPStavePIC').img['src']
                     result_url = "https://tw.everyonepiano.com"+result
-                    # download img
-                    filename = wget.download(
-                        result_url, out=name+'('+str(counts2)+').png')
                     pdf.add_page()
-                    pdf.image(name+'('+str(counts2)+').png', x=0, y=0, w=210)
-                    # delete
-                    os.remove(filename)
+                    pdf.image(result_url, x=0, y=0, w=210)
                     counts2 += 1
                 else:  # Online Music Stand
                     counts2 += 1
