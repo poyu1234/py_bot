@@ -25,7 +25,7 @@ class Web_scraper(Cog_Extension):
         def check(title):
             return title.author == ctx.author and title.channel == ctx.message.channel
 
-        await ctx.send("Please enter the song title u want to search.")
+        await ctx.send(f"<@{ctx.author.id}>Please enter the song title u want to search.")
         response = await self.client.wait_for('message', check=check)
         title = response.content.replace(' ', '+')
 
@@ -46,6 +46,7 @@ class Web_scraper(Cog_Extension):
         # list resort
         songs = soup.find_all('div', class_='MusicIndexBox')
         counts = 1
+        info = ''
         for song in songs:
             title = song.find('div', class_='MITitle').a.text
             intro = song.find(
@@ -57,16 +58,15 @@ class Web_scraper(Cog_Extension):
             intro = intro.replace(date, '')
             intro = intro.replace(hid, '')
             intro = intro[38:]
-            info = str(counts)+'.'+title+intro
-            await ctx.send(info)
+            info = info+str(counts)+'.'+title+intro
             counts += 1
         # choose songs
-        await ctx.send("which song do u want to download?(please enter the number and split by \",\"")
+        await ctx.send(f"{info}<@{ctx.author.id}>Which song do u want to download?(please enter the number and split by \",\".")
         response = await self.client.wait_for('message', check=check)
         try:
             input_num = [int(i) for i in response.content.split(',')]
         except:
-            await ctx.send("You didn't input with correct format.")
+            await ctx.send(f"<@{ctx.author.id}>You didn't input with correct format.")
             return 1
 
         # open img
@@ -76,6 +76,7 @@ class Web_scraper(Cog_Extension):
             r = requests.get(url, headers=header)
             soup = BeautifulSoup(r.text, 'html.parser')
             title = songs[i-1].find('div', class_='MITitle').a.text
+            print(title)
             sheets = soup.find('div', id='EOPReadScrollerW').find_all(
                 'div', class_='EOPSingleWuxianpu')
             # set up
@@ -102,7 +103,8 @@ class Web_scraper(Cog_Extension):
                     continue
 
             bstring = pdf.output(dest='S').encode('latin-1')
-            await ctx.send(file=discord.File(io.BytesIO(bstring), filename=f'{title}.pdf'))
+            # non-english filename can't be displayed
+            await ctx.send(f"<@{ctx.author.id}>This is your sheet.", file=discord.File(io.BytesIO(bstring), filename=f'{title}.pdf'))
 
 
 async def setup(client):
