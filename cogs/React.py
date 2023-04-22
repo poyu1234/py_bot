@@ -1,5 +1,6 @@
 import discord
 from discord.ext import commands
+from discord import app_commands
 from core.classes import Cog_Extension
 import json
 
@@ -33,10 +34,11 @@ class React(Cog_Extension):
             pic = discord.File(jdata['wake_up'])
             await message.channel.send(f'<@{message.author.id}>', file=pic)
 
-    @commands.command()
+    @commands.hybrid_command()
+    @app_commands.guilds(discord.Object(id=int(jdata["PY_guild_id"])))
     async def greet(self, ctx):
         await ctx.send(f"hi! <@{ctx.author.id}>")
 
 
 async def setup(client):
-    await client.add_cog(React(client))
+    await client.add_cog(React(client), guilds=[discord.Object(id=int(jdata["PY_guild_id"]))])

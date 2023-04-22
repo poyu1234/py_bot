@@ -1,5 +1,6 @@
 import discord
 from discord.ext import commands
+from discord import app_commands
 from core.classes import Cog_Extension
 import json
 
@@ -13,7 +14,8 @@ class Main(Cog_Extension):
     async def on_ready(self):
         print("Main is ready")
 
-    @commands.command()
+    @commands.hybrid_command()
+    @app_commands.guilds(discord.Object(id=int(jdata["PY_guild_id"])))
     async def ping(self, ctx):
         bot_latency = round(self.client.latency*1000)
 
@@ -31,4 +33,4 @@ class Main(Cog_Extension):
 
 
 async def setup(client):
-    await client.add_cog(Main(client))
+    await client.add_cog(Main(client), guilds=[discord.Object(id=int(jdata["PY_guild_id"]))])
