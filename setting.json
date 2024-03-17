@@ -1,0 +1,14 @@
+{
+    "TOKEN":"your discord bot TOKEN",
+    "PY_guild_id":"the bot's guild id",
+    "application_id":"the bot's application id",
+    "general_id":"the general channel id",
+    "welcome_id":"the id of the channel where to say hello",
+    "bye_id":"the id of the channel where to say goodbye",
+    "initial_cogs":["cogs.Main", 
+                    "cogs.React", 
+                    "cogs.Web_scraper",
+                    "cogs.test"],
+
+    "wake_up":"./img/wakeup.jpg"
+}
