@@ -7,8 +7,6 @@
     "bye_id":"the id of the channel where to say goodbye",
     "initial_cogs":["cogs.Main", 
                     "cogs.React", 
-                    "cogs.Web_scraper",
-                    "cogs.test"],
-
+                    "cogs.Web_scraper"],
     "wake_up":"./img/wakeup.jpg"
 }
